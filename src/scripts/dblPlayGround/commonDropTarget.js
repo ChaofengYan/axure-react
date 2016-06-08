@@ -31,11 +31,10 @@ function getStyle(bgcolor,childs) {
   };
 
  class CommonChild extends Component{
-
     render(){
       const { isOver, isOverCurrent,connectDropTarget,isFocus } = this.props;
 
-      let backgroundColor = 'rgba(0, 0, 0, .5)',
+      let backgroundColor = '#fff',
           outline = isFocus?'3px solid green':'1px solid gray';
       if (isOverCurrent) {
         backgroundColor = 'red';
@@ -43,12 +42,8 @@ function getStyle(bgcolor,childs) {
       return connectDropTarget(
         <div className="common-child" 
             style={{
-              borderBottom:"10px dashed gray",
-              backgroundColor: backgroundColor,
-              position: 'relative',
-              color: 'white',
-              outline:outline,
-              paddingBottom:10
+              backgroundColor: backgroundColor,            
+              outline:outline             
             }} 
             key={this.props.key} data-dblid={this.props.dblid}
         >

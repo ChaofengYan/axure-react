@@ -26,7 +26,7 @@ class H1 extends Component{
   }
   render(){
     const {childs} = this.props;
-
+    
     return (
       <div className="h1" key={this.props.key} style={this.props._STYLE_} data-dblid={this.props.dblid}>
         我是H1， {this.props.name} ,{this.props.age}

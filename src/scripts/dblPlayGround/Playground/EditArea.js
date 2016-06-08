@@ -40,24 +40,6 @@ class ConfigDialog extends Component{
           //_item=
         }
 
-        // let _arr_item;
-        // switch(item){
-        //   case 'dblid':
-        //     _arr_item={
-        //       key:item,
-        //       value:props[item]
-        //     };
-        //     break;
-        //   case 'dblid':
-        //     _arr_item={
-        //       key:item,
-        //       value:props[item]
-        //     };
-        //     break;
-        //   default:
-
-        // }
-
         if(item=='dblid') _item='唯一码';
 
         //常规样式编辑，筛选出尚未列出的属性

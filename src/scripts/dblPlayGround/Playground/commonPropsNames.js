@@ -8,5 +8,4 @@ export default {
   border:"边框",
   margin:"外边距",
   padding:"内边距"
-
 }

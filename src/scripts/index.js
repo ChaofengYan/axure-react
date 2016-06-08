@@ -1,12 +1,12 @@
-require('../css/test.less');
+require('../css/dev.less'); //开发模式下独有
+require('../css/index.less');
+require('antd/lib/index.css');
 import React, { Component, PropTypes } from 'react';
 import { DropTarget,DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import Container from './dblPlayGround/app';
+import Container from './dblPlayGround/index';
 import ReactDOM from 'react-dom';
-import ReactDOMServer from 'react-dom/server';
-//ReactDOM.render(<Container />, document.getElementById('container'));
-//import ComponentsCollection from "../components" //引入可用的子组件
+
 
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'

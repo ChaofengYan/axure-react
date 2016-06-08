@@ -1,4 +1,4 @@
-require('../css/test.less');
+require('../css/index.less');
 require('antd/style/index.less');
 
 //重设DropTarget组件，去除拖动功能

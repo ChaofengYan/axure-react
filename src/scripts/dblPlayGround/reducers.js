@@ -1,10 +1,18 @@
 import { combineReducers } from 'redux'
 import ComponentsCollection from '../components/index'
 import EditArea from './Playground/EditArea'
+import getChildById from '../utils/index'
 
 const _childs2={
+  _STYLE_:{
+
+  },
+  _EVENTS_:{
+
+  },
 	childs:[{
       childName: 'H1',
+
       props: {
         dblid:'.0',
         childs:[{
@@ -36,10 +44,18 @@ const _childs2={
   };
 
 const _childs={
+    // "childName": "",
+    // "alias":"root",
+    // "props":{
+    //   "dblid": ".",
+    //   "isfocus":true,
+
+    // }
     "childs": [{
         "childName": "H1",
         "props": {
             "dblid": ".0",
+            "name":"test",
             "isfocus":true,
             "childs": [{
                 "childName": "",
@@ -127,6 +143,24 @@ const _childs={
             "key": 2
         }
     }],
+    currentChild:{
+        "childName": "H1",
+        "props": {
+            "dblid": ".0",
+            "name":"test",
+            "isfocus":true,
+            "childs": [{
+                "childName": "",
+                "props": {
+                    "dblid": ".0.0",
+                    "name": "test",
+                    "isfocus":false,
+                    "childs": []
+                }
+            }],
+            "key": 0
+        }
+    },
     "dlgShow": false,
     "dlgContent": "",
     "contentMenuShow": {},
@@ -134,31 +168,7 @@ const _childs={
 }
 
 const _childs4={childs:[]};
-//返回一个引用
-/*
- * rootChilds: store中childsStructor，每次需函数调用者传递进来，数组
- child: 当前id的组件对象，否则为空
- father:当前id的父级组件对象，否则为根数组
 
- */
-function getChildById(rootChilds,_childID){
-  if(!_childID) return {
-    child:"", //根级子元素组成的数组？
-    father:rootChilds
-  }
-	//根据ID选择
-	let level = _childID.split('.').slice(1);
-	let parents = [];
-	let _child = level.reduce(function(prev, next) { //每次都从最顶级开始        
-		var item = Array.isArray(prev) ? prev[next] : prev.props.childs[next];
-		parents.push(item);
-		return item;
-	}, rootChilds);
-	return {
-    child:Array.isArray(_child) ? _child[0] : _child, //返回当前组件对象，包含props
-    father:parents.length>1?parents[parents.length-2]:rootChilds //父级组件，用于删除一个child
-  }
-}
 
 //操作childs结构
 function childsStructor(state=_childs, action) {
@@ -200,6 +210,7 @@ function childsStructor(state=_childs, action) {
             }
             _childhasChilds.push({ //增加到指定ID的对象内部（后面）
                 childName: childName,
+                forbidden:true,
                 props: Object.assign({},_currentComponetPrpops,{
                   dblid:_childID+"."+_childhasChilds.length,
                   childs:_childs
@@ -211,13 +222,18 @@ function childsStructor(state=_childs, action) {
         let num = 0;
         let brothers = Array.isArray(father)?father:father.props.childs;
         const father_id = Array.isArray(father)?"":father.props.dblid;
+        //查看父元素是否forbidden
         const new_childs = brothers.filter(function(item,index,arr){
             if(item!=_child){
-                item.props.dblid=father_id+"."+num; //重构dblid
-                num++;
-                return item;
+                if(!father.forbidden){
+                  item.props.dblid=father_id+"."+num; //重构dblid
+                  num++;
+                }                
+            }else{
+              if(!father.forbidden) return;
+              item.props.childs=[];
             }
-            return;
+            return item;
         });
         if(!Array.isArray(father)){
             father.props.childs = new_childs;
@@ -227,8 +243,13 @@ function childsStructor(state=_childs, action) {
 			return cloneState;
 		case 'CHILD_CHANGE':   //必须指定childID
       if(!_childID) return state;
-      let propsNeedUpdate = _child.props; //取出指定ID组件的属性的引用！引用！
-      propsNeedUpdate[action.key] = action.value;  //直接修改引用的信息，自动同步到Store中
+      
+      if(action.key=='alias'){
+        _child.alias = action.value
+      }else{
+        let propsNeedUpdate = _child.props; //取出指定ID组件的属性的引用！引用！
+        propsNeedUpdate[action.key] = action.value;  //直接修改引用的信息，自动同步到Store中
+      }      
 			return cloneState;
     case 'CONFIG_MODAL':
       cloneState.dlgShow=action.show;

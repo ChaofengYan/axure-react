@@ -1,0 +1,22 @@
+.common-child {
+  border-bottom-width: 10px;
+  border-bottom-style: dashed;
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+  padding-bottom:10;
+  position: relative;
+  .common-child {
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+
+    .common-child {
+      border-bottom-color: rgba(0, 0, 0, 0.4);
+
+      .common-child {
+        border-bottom-color: rgba(0, 0, 0, 0.7);
+
+        .common-child {
+          border-bottom-color: rgba(0, 0, 0, 1);
+        }
+      }
+    }
+  }
+}

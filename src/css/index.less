@@ -1,0 +1,186 @@
+#test {
+  position: fixed;
+  top: 30px;
+  left: 30px;
+  height: 400px;
+  width: 200px;
+  background: #ddd;
+}
+
+//ant 组件的个性化
+.ant-modal-container {
+  .ant-input-wrapper {
+    .ant-input {
+      width: auto;
+      border-radius: 0;
+      height: 20px;
+    }
+  }
+}
+.ant-collapse {
+  background-color: #fff !important;
+  border: none !important;
+}
+//dbl 打头的组件
+.dbl-item-title {
+  background-color: #f4f4f4;
+  text-align: center;
+  line-height: 25px;
+  font-size: 10px;
+  font-weight: bold;
+}
+.dbl-lib-item {
+  float: left;
+  width: 60px;
+  height: 60px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  padding: 5px;
+
+  &:hover {
+    background-color: #C6ECF9;
+    outline: 1px solid #009EDB;
+  }
+  img {
+    height: 30px;
+    width: 30px;
+  }
+}
+.dbl-btn {
+  outline: 1px solid #d9d9d9;
+  padding: 2px 5px;
+  color: #999;
+  font-size: 7px;
+
+  &:hover {
+    background-color: #C6ECF9;
+    outline: 1px solid #009EDB;
+  }
+}
+// Case Editor样式
+.case-editor {
+  width: 800px !important;
+
+  .ant-modal-content {
+    background: #f4f4f4;
+  }
+  .ant-modal-header {
+    border-radius: 0;
+    padding: 10px;
+    background: #dfdfdf;
+
+    .ant-modal-title {
+      text-align: center;
+      font-weight: 100;
+    }
+  }
+  .case-editor-top {
+    .dbl-btn {
+      margin-left: 20px;
+    }
+  }
+  .case-editor-body {
+    margin-top: 10px;
+
+    .choose-area {
+      background: #fff;
+      margin-right: 10px;
+    }
+  }
+}
+#container {
+  #J-head {
+    background-color: #f4f4f4;
+
+    .head-1 {
+      height: 60px;
+    }
+    .head-2 {
+      height: 30px;
+      background-color: #ddd;
+      border-bottom: 1px solid #ababab;
+    }
+  }
+  #J-root {
+    #J-library {
+    }
+    #J-playground {
+      height: 100%;
+      overflow: scroll;
+      border-left: 1px solid #ababab;
+      border-right: 1px solid #ababab;
+      border-top: 26px solid #ababab;
+
+      .body {
+        min-width: 1400px;
+        min-height: 600px;
+      }
+    }
+    #J-tools {
+      #J-inspector {
+        .ant-tabs-tab {
+          border-radius: 0;
+          margin-right: 1px;
+          width: 49%;
+
+          .ant-tabs-nav-scroll {
+            width: auto;
+
+            .ant-tabs-nav {
+              float: none;
+            }
+          }
+          .ant-tabs-tab-inner {
+            border-radius: 0;
+            height: 26px;
+            padding: 0;
+            line-height: 26px;
+            width: 100px;
+            text-align: center;
+          }
+        }
+        .ant-tabs-tab-active {
+          background: #2db7f5;
+
+          .ant-tabs-tab-inner {
+            color: #fff;
+          }
+        }
+      }
+      #J-outline {
+        .ant-tree-checkbox {
+          float: right;
+
+          .ant-tree-checkbox-inner {
+          }
+        }
+      }
+    }
+  }
+}
+.content-menu {
+  background-color: #fff;
+  position: absolute;
+  padding: 20px;
+  border-radius: 5px;
+
+  li:first-child {
+    border-top: 1px solid #ddd;
+  }
+  li {
+    border-bottom: 1px solid #ddd;
+    padding: 5px 0;
+  }
+  span {
+    width: 100px;
+    display: inline-block;
+  }
+  a {
+    margin: 0 5px;
+  }
+}
+textarea {
+  width: 100%;
+  height: 10em;
+}

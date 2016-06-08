@@ -56,7 +56,6 @@ class ContentMenu extends Component{
             <li key={index} data-dblid={id} onMouseEnter={self.handleHighlight.bind(self,'enter')} onMouseLeave={self.handleHighlight.bind(self,'leave')} >
               <span>{id}</span>
               <a className="edit" data-dblid={id} onClick={self.handleEdit.bind(self)}>编辑</a>
-              <a className="add-action" data-dblid={id} onClick={self.handleAddAction.bind(self)}>交互</a>
               <a className="delete" data-dblid={id} onClick={self.handleDelete.bind(self)}>删除</a>
             </li>
           )

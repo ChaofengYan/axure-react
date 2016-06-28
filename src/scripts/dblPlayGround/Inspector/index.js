@@ -35,12 +35,14 @@ const Panel = Collapse.Panel;
     });
   }
   render() {
-    const _target_el = this.props.currentChild;
+    const _target_el = this.props.currentChild||{};
+    
     console.dir(JSON.stringify(_target_el));
     //getChildById(this.props.currentChild)   
     return(
       <div id="J-inspector">
-       <h3 className="dbl-item-title">检查工具：{_target_el.childName}</h3>
+       <h3 className="dbl-item-title">检查工具：{_target_el.childName||'Page'}</h3>
+
        <Input placeholder={_target_el.alias||_target_el.props.dblid} 
         onChange={this.handleChangeAlias.bind(this)} />
        <Tabs type="card">

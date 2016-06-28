@@ -47,14 +47,15 @@ const boxTarget = {
     console.dir('playground index render!');
 
     const _childs = this.context.store;
-    const {childs,dlgShow,dlgContent,contentMenuShow,contentMenuProps} =this.props.childsStructor;
-
+    const {root,dlgShow,dlgContent,contentMenuShow,contentMenuProps} =this.props.childsStructor;
+    const {childs,_STYLE_,_EVENTS_} = root.props;
     let backgroundColor = 'rgba(0, 0, 0, .5)';
     if (isOverCurrent || isOver ) {
       //backgroundColor = 'red';
     }
     return connectDropTarget(
       <div className="body" data-dblid="."
+        style={_STYLE_} {..._EVENTS_}
         onDoubleClick={this.handleEdit.bind(this)} 
         onContextMenu={this.handleContentMenu.bind(this)}
         >

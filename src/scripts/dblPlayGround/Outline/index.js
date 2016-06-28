@@ -74,27 +74,31 @@ const TreeNode = Tree.TreeNode;
     });
   }
   render() {   
-    const _CHILDS = this.props.childs,self = this;
+    const _ROOT = this.props.root,self = this;
+    let expandedKeys = ['.'];
     //console.dir(JSON.stringify(this.props));
     const loop = data => data.map((item) => {
       const {dblid,childs} = item.props;
+      expandedKeys.push(dblid);
       const _title = <span>{(item.alias?item.alias:"")+"("+dblid+")"}<span data-dblid={dblid} onClick={self.handleDelete.bind(self)}>Del</span></span>;
       if (childs&&childs.length>0) {
         return <TreeNode title={_title} key={dblid}>{loop(childs)}</TreeNode>;
       }
+      //if(childs.props.childs.length>0)  //当前子组件包含非空的子孙组件
       return <TreeNode title={_title} key={dblid} isLeaf={true}/>;
     });
-
+    
     return(
       <div id="J-outline">
         <h3 className="dbl-item-title">结构概览</h3>
         <Tree showLine multiple={false} checkable draggable
+        expandedKeys = {expandedKeys} autoExpandParent={false}
         defaultExpandAll = {true}
         onDragEnter={this.onDragEnter.bind(this)}
         onDrop={this.onDrop.bind(this)}
         onSelect={this.onSelect.bind(this)} onCheck={this.onCheck.bind(this)}>
         <TreeNode title="root" key=".">
-          {loop(_CHILDS)}
+          {loop(_ROOT.props.childs)}
         </TreeNode>
       </Tree>
       </div>

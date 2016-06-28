@@ -6,9 +6,10 @@
 
  */
 function getChildById(rootChilds,_childID){
-  if(!_childID) return {
-    child:"", //根级子元素组成的数组？
-    father:rootChilds
+  if(_childID=='.') return {
+  	child:rootChilds,
+    //child:"", //根级子元素组成的数组？
+    father:null
   }
 	//根据ID选择
 	let level = _childID.split('.').slice(1);

@@ -75,7 +75,7 @@ import { Row, Col } from 'antd';
           </Col>
           <Col span={'4'} id="J-tools">
             <Inspector currentChild={this.props.childsStructor.currentChild}  />
-            <Outline childs={this.props.childsStructor.childs} />
+            <Outline root={this.props.childsStructor.root} />
           </Col>
         </Row>
       </div>

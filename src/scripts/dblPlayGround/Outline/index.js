@@ -68,10 +68,19 @@ const TreeNode = Tree.TreeNode;
     });
   }
   handleDelete(e){
-    this.context.store.dispatch({
-      type: 'CHILD_REMOVE',
-      childID:e.target.getAttribute('data-dblid') 
-    });
+    const {resetStore,childRemove} = this.props.actions;
+    const childID = e.target.getAttribute('data-dblid');
+    if(childID=='.'){
+      resetStore();
+    }else{
+      childRemove(childID);
+    }
+    
+    // this.context.store.dispatch({
+    //   type: 'CHILD_REMOVE',
+    //   childID:e.target.getAttribute('data-dblid') 
+    // });
+
   }
   render() {   
     const _ROOT = this.props.root,self = this;
@@ -88,6 +97,7 @@ const TreeNode = Tree.TreeNode;
       return <TreeNode title={_title} key={dblid} isLeaf={true}/>;
     });
     
+    const rootTitle = <span>root <span data-dblid='.' onClick={self.handleDelete.bind(self)}>Del</span></span>;
     return(
       <div id="J-outline">
         <h3 className="dbl-item-title">结构概览</h3>
@@ -97,7 +107,7 @@ const TreeNode = Tree.TreeNode;
         onDragEnter={this.onDragEnter.bind(this)}
         onDrop={this.onDrop.bind(this)}
         onSelect={this.onSelect.bind(this)} onCheck={this.onCheck.bind(this)}>
-        <TreeNode title="root" key=".">
+        <TreeNode title={rootTitle} key=".">
           {loop(_ROOT.props.childs)}
         </TreeNode>
       </Tree>
@@ -110,8 +120,4 @@ Box.contextTypes = {
   store:React.PropTypes.any
  } ;
 
-// function select(state) {
-//   return state.childsStructor
-// }
 export default Box
-//export default connect(select)(Box)

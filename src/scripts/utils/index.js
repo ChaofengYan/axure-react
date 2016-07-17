@@ -5,7 +5,7 @@
  father:当前id的父级组件对象，否则为根数组
 
  */
-function getChildById(rootChilds,_childID){
+export function getChildById(rootChilds,_childID){
   if(_childID=='.') return {
   	child:rootChilds,
     //child:"", //根级子元素组成的数组？
@@ -25,4 +25,14 @@ function getChildById(rootChilds,_childID){
   }
 }
 
-export default getChildById;
+/**
+ * 根据ID修改组件给定属性
+ * 
+ * @param  {[type]} _childID [description]
+ * @param  {[type]} props    [description]
+ * @return {[type]}          [description]
+ */
+export function changePropsById(_childID,props){
+	console.dir('changePropsById');
+	getChildById(window.ROOT,_childID);
+}

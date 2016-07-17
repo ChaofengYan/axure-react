@@ -4,17 +4,19 @@ require('antd/lib/index.css');
 import React, { Component, PropTypes } from 'react';
 import { DropTarget,DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import Container from './dblPlayGround/index';
-import ReactDOM from 'react-dom';
+import Container from './dblPlayGround';
+import {render} from 'react-dom';
+import CommonDropTarget from './dblPlayGround/CommonDropTarget'
+window.CommonDropTarget = CommonDropTarget;
 
-
-import { createStore } from 'redux'
+import {changePropsById} from './utils';
+window.changePropsById = changePropsById;
 import { Provider } from 'react-redux'
-import Reducers from './dblPlayGround/reducers'
+import configureStore from './store'
 
-let store = createStore(Reducers);
+const store = configureStore();
 
-ReactDOM.render(
+render(
   <Provider store={store}>
     <Container />
   </Provider>,

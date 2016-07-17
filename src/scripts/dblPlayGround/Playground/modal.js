@@ -5,6 +5,7 @@
 */
 
 import React, { Component, PropTypes } from 'react';
+import {Modal,Button} from 'antd';
 
 class ModalDlg extends Component{
   constructor(props){

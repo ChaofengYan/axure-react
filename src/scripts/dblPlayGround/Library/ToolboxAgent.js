@@ -8,11 +8,8 @@ export default (ele,name) => {
   }
 
   const boxSource = {
-  /*beginDrag:必须，开始时*/
+    /*beginDrag:必须，开始时*/
     beginDrag(props) {
-      // console.dir({name});
-      // console.dir("ele"+ele);
-     
       return {name,};
     }
   };
@@ -23,7 +20,7 @@ export default (ele,name) => {
     return connectDragSource(
       <div className="dbl-lib-item">
         <img src="" />
-      {ele}
+        {ele}
       </div>
     );
     }

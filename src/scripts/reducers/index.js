@@ -1,173 +1,9 @@
 import {
   combineReducers
-} from 'redux'
+} from 'redux';
+import * as Types from '../actions/actionTypes';
 import ComponentsCollection from '../components/index'
-import EditArea from './Playground/EditArea'
-import getChildById from '../utils/index'
-
-const _childs2 = {
-  _STYLE_: {
-
-  },
-  _EVENTS_: {
-
-  },
-  childs: [{
-    childName: 'H1',
-
-    props: {
-      dblid: '.0',
-      childs: [{
-        childName: '',
-        props: {
-          dblid: '.0.0',
-          name: "test",
-          childs: []
-        }
-      }]
-    }
-  }, {
-    childName: 'H1',
-    props: {
-      dblid: '.1',
-      childs: [{
-        childName: '',
-        props: {
-          dblid: '.1.0',
-          childs: []
-        }
-      }]
-    }
-  }],
-  dlgShow: false,
-  dlgContent: '',
-  contentMenuShow: {},
-  contentMenuProps: ""
-};
-
-const _childs3 = {
-  // "childName": "",
-  // "alias":"root",
-  // "props":{
-  //   "dblid": ".",
-  //   "isfocus":true,
-
-  // }
-  "childs": [{
-    "childName": "H1",
-    "props": {
-      "dblid": ".0",
-      "name": "test",
-      "isfocus": true,
-      "childs": [{
-        "childName": "",
-        "props": {
-          "dblid": ".0.0",
-          "name": "test",
-          "isfocus": false,
-          "childs": []
-        }
-      }],
-      "key": 0
-    }
-  }, {
-    "childName": "H1",
-    "props": {
-      "dblid": ".1",
-      "isfocus": true,
-      "childs": [{
-        "childName": "",
-        "props": {
-          "dblid": ".1.0",
-          "isfocus": false,
-          "childs": []
-        }
-      }],
-      "key": 1
-    }
-  }, {
-    "childName": "Row",
-    "props": {
-      "row": 5,
-      "spans": {
-        "name": "列个数，总和为24，多个列用','分割。如：6，6，6，6或12，12",
-        "value": [
-          8,
-          8,
-          8
-        ]
-      },
-      "offsets": [
-        0,
-        0,
-        0
-      ],
-      "isfocus": false,
-      "childs": [{
-        "childName": "",
-        "props": {
-          "dblid": ".2.0",
-          "isfocus": false,
-          "childs": [{
-            "childName": "H1",
-            "props": {
-              "dblid": ".1",
-              "isfocus": false,
-              "childs": [{
-                "childName": "",
-                "props": {
-                  "dblid": ".2.0.0",
-                  "isfocus": false,
-                  "childs": []
-                }
-              }],
-              "key": 1
-            }
-          }]
-        }
-      }, {
-        "childName": "",
-        "props": {
-          "dblid": ".2.1",
-          "isfocus": false,
-          "childs": []
-        }
-      }, {
-        "childName": "",
-        "props": {
-          "dblid": ".2.2",
-          "isfocus": false,
-          "childs": []
-        }
-      }],
-      "dblid": ".2",
-      "isfocus": false,
-      "key": 2
-    }
-  }],
-  currentChild: {
-    "childName": "H1",
-    "props": {
-      "dblid": ".0",
-      "name": "test",
-      "isfocus": true,
-      "childs": [{
-        "childName": "",
-        "props": {
-          "dblid": ".0.0",
-          "name": "test",
-          "isfocus": false,
-          "childs": []
-        }
-      }],
-      "key": 0
-    }
-  },
-  "dlgShow": false,
-  "dlgContent": "",
-  "contentMenuShow": {},
-  "contentMenuProps": ""
-}
+import {getChildById} from '../utils'
 
 let _childs = {
   root: {
@@ -190,7 +26,17 @@ let _childs = {
   }
 };
 
+const handleSessionStorage ={
+  read(){
+    return JSON.parse(sessionStorage.getItem('state'));
+  },
+  write(value){
+    window.ROOT = value.root;
+    sessionStorage.setItem('state',JSON.stringify(value));
+  }
+};
 
+let lastTime;
 
 //操作childs结构
 function childsStructor(state = _childs, action) {
@@ -201,7 +47,7 @@ function childsStructor(state = _childs, action) {
   // }
   const _childID = action.childID || '.';
   const childName = action.childName;
-  let cloneState = Object.assign({}, state); //每次操作克隆组件
+  let cloneState = $.extend(true,{}, state); //每次操作克隆组件
   //let _child,father;
   const {
     child: _child,
@@ -211,7 +57,7 @@ function childsStructor(state = _childs, action) {
   const _childhasChilds = _child ? _child.props.childs : father;
 
   switch (action.type) {
-    case 'CHILD_CREATE':
+    case Types.CHILD_CREATE:
       var father_dblid = "";
       let _currentComponet = ComponentsCollection[childName];
       const {
@@ -247,8 +93,29 @@ function childsStructor(state = _childs, action) {
           })
         });
       };
+      handleSessionStorage.write(cloneState);
       return cloneState;
-    case 'CHILD_REMOVE':
+    case Types.CHANGE_PROPS: //不写入Session，无侵入改写
+      console.dir('here');
+      if(action.backOpt){
+        cloneState.root = handleSessionStorage.read().root;
+      }else if(_child&&action.props){
+        $.extend(true,_child.props,action.props);
+      }
+      return cloneState;
+    case Types.CHILD_CHANGE: //必须指定childID
+      if (!_childID) return state;
+
+      if (action.key == 'alias') {
+        _child.alias = action.value
+      } else {
+        let propsNeedUpdate = _child.props; //取出指定ID组件的属性的引用！引用！
+        propsNeedUpdate[action.key] = action.value; //直接修改引用的信息，自动同步到Store中
+      }
+      cloneState.currentChild = _child; //当前选中组件
+      handleSessionStorage.write(cloneState);
+      return cloneState;
+    case Types.CHILD_REMOVE:
       let num = 0;
       let brothers = Array.isArray(father) ? father : father.props.childs;
       const father_id = Array.isArray(father) ? "" : father.props.dblid;
@@ -270,17 +137,9 @@ function childsStructor(state = _childs, action) {
       } else {
         cloneState.childs = new_childs;
       }
+      handleSessionStorage.write(cloneState);
       return cloneState;
-    case 'CHILD_CHANGE': //必须指定childID
-      if (!_childID) return state;
 
-      if (action.key == 'alias') {
-        _child.alias = action.value
-      } else {
-        let propsNeedUpdate = _child.props; //取出指定ID组件的属性的引用！引用！
-        propsNeedUpdate[action.key] = action.value; //直接修改引用的信息，自动同步到Store中
-      }
-      return cloneState;
     case 'CONFIG_MODAL':
       cloneState.currentChild = _child;
       // cloneState.dlgShow = action.show;
@@ -308,6 +167,13 @@ function childsStructor(state = _childs, action) {
           _child.props.isfocus = (action.direction == "enter");
         }
       }
+      return cloneState;
+    case Types.LOAD:   
+      return $.extend(true,cloneState,handleSessionStorage.read());
+    case Types.RESET_STORE:
+      return _childs;
+    case Types.BEFORE_UNLOAD:
+      handleSessionStorage.write(cloneState);
       return cloneState;
     case 'EXPORT':
       cloneState.dlgShow = true;
@@ -339,10 +205,3 @@ export default combineReducers({
   childsStructor,
   playGroundModal
 })
-
-// export default (state = {}, action)=>{
-//   return {
-//     childsStructor:childsStructor(state.childsStructor,action),
-//    playGroundModal:playGroundModal(state,action)
-//   };
-// }

@@ -14,3 +14,5 @@ require('antd/style/index.less');
  		window[item] = Antd[item];
  	}
  }
+
+ 

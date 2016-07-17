@@ -8,7 +8,7 @@ import { DropTarget } from 'react-dnd';
 import EditArea from './EditArea'
 import ContentMenu from './ContentMenu'
 import HTML5Backend from 'react-dnd-html5-backend';
-import ComponentsCollection from '../../components/index'
+import ComponentsCollection from '../../components'
 import ModalDlg from './modal'
 
 const boxTarget = {
@@ -18,11 +18,8 @@ const boxTarget = {
     if (hasDroppedOnChild) {
       return;
     }
-    component.context.store.dispatch({
-      type: 'CHILD_CREATE',
-      childName:childName
-    });
-
+    const {childCreate} = props.actions;
+    childCreate(childName);
   }
 };
 
@@ -44,15 +41,20 @@ const boxTarget = {
   render() {
     const { hideSourceOnDrag, connectDropTarget,isOver, isOverCurrent } = this.props;
 
-    console.dir('playground index render!');
-
     const _childs = this.context.store;
-    const {root,dlgShow,dlgContent,contentMenuShow,contentMenuProps} =this.props.childsStructor;
+    const {childsStructor,actions} = this.props;
+    const {root,dlgShow,dlgContent,contentMenuShow,contentMenuProps} =childsStructor;
     const {childs,_STYLE_,_EVENTS_} = root.props;
     let backgroundColor = 'rgba(0, 0, 0, .5)';
     if (isOverCurrent || isOver ) {
       //backgroundColor = 'red';
     }
+
+    for(let key in _EVENTS_){
+      const  event = _EVENTS_[key];
+      if(typeof event=='function') _EVENTS_[key] = event.bind(this);
+    } 
+
     return connectDropTarget(
       <div className="body" data-dblid="."
         style={_STYLE_} {..._EVENTS_}
@@ -61,7 +63,7 @@ const boxTarget = {
         >
         {
           !childs?"":childs.map(function(item,index,arr){
-              return React.createElement(ComponentsCollection[item.childName],Object.assign(item.props,{key:index}));
+              return React.createElement(ComponentsCollection[item.childName],Object.assign({},item.props,{key:index,actions}));
             })
         }
         <ModalDlg dialogShow={dlgShow} children={dlgContent} />
